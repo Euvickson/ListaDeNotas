@@ -6,7 +6,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.view.View;
 
+import java.util.List;
+
 import br.com.listadenotas.DAO.NotaDao;
+import br.com.listadenotas.model.Nota;
 import br.com.listadenotas.recyclerview.adapter.AdapterRecyclerview;
 
 public class ListaDeNotasActivity extends AppCompatActivity {
@@ -22,11 +25,11 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         setTitle(TITULO_APPBAR);
 
         NotaDao dao = new NotaDao();
-        dao.todos()
+        List<Nota> todasNotas = dao.todos();
 
-        adapter = new AdapterRecyclerview();
+        adapter = new AdapterRecyclerview(todasNotas, this);
 
-        RecyclerView recyclerView = findViewById(R.id.lista_notas_recyclerView);
-        recyclerView.setAdapter(adapter);
+        RecyclerView listaDeNotas = findViewById(R.id.lista_notas_recyclerView);
+        listaDeNotas.setAdapter(adapter);
     }
 }

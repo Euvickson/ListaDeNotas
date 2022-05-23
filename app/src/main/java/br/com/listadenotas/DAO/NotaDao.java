@@ -1,14 +1,15 @@
 package br.com.listadenotas.DAO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.listadenotas.model.Nota;
 
 public class NotaDao {
 
-private static
+    private final static ArrayList<Nota> notas = new ArrayList<>();
 
     public List<Nota> todos() {
-        return null;
+        return (List<Nota>) notas.clone();
     }
 }
