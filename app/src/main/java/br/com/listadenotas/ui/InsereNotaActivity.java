@@ -1,0 +1,16 @@
+package br.com.listadenotas.ui;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+import br.com.listadenotas.R;
+
+public class InsereNotaActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_insere_nota);
+    }
+}

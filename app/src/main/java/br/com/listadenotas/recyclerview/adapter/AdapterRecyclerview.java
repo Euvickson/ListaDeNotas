@@ -8,14 +8,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import br.com.listadenotas.ListaDeNotasActivity;
 import br.com.listadenotas.model.Nota;
 
 public class AdapterRecyclerview extends RecyclerView.Adapter {
 
     private final List<Nota> notas;
     private final Context context;
-    
+
     public AdapterRecyclerview(List<Nota> notas, Context context) {
         this.notas = notas;
         this.context = context;
@@ -34,6 +33,6 @@ public class AdapterRecyclerview extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return 0;
+        return notas.size();
     }
 }
