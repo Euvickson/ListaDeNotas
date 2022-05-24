@@ -6,4 +6,32 @@
     android:layout_height="match_parent"
     tools:context=".ui.InsereNotaActivity">
 
+    <EditText
+        android:id="@+id/insere_nota_titulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:layout_margin="20dp"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:background="@android:color/transparent"
+        android:hint="Titulo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <EditText
+        android:id="@+id/insere_nota_descricao"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:inputType="textPersonName"
+        android:background="@android:color/transparent"
+        android:hint="Descrição"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="top"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/insere_nota_titulo"
+        app:layout_constraintStart_toStartOf="@+id/insere_nota_titulo"
+        app:layout_constraintEnd_toEndOf="@+id/insere_nota_titulo"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

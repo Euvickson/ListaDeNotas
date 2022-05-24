@@ -12,4 +12,8 @@ public class NotaDao {
     public List<Nota> todos() {
         return (List<Nota>) notas.clone();
     }
+
+    public void insere(Nota nota) {
+        notas.add(nota);
+    }
 }
