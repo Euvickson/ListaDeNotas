@@ -48,6 +48,7 @@ public class InsereNotaActivity extends AppCompatActivity {
             String descricaoCriada = descricao.getText().toString();
             Nota nota = new Nota(tituloCriado, descricaoCriada);
             dao.insere(nota);
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }

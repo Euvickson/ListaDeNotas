@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
@@ -27,6 +28,30 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
         setTitle(TITULO_APPBAR);
 
+        NotaDao dao = new NotaDao();
+
+        for(int i = 0; i<= 1000; i++){
+            Nota nota = new Nota("Título " + i, "Descrição " + i);
+            dao.insere(nota);
+        }
+
+        List<Nota> todasNotas = dao.todos();
+
+        configuraRecyclerView(todasNotas);
+
+        configuraBotaoInsereNovaNota();
+    }
+
+    private void configuraRecyclerView(List<Nota> todasNotas) {
+        adapter = new AdapterRecyclerview(todasNotas, this);
+        RecyclerView listaDeNotas = findViewById(R.id.lista_notas_recyclerView);
+        listaDeNotas.setAdapter(adapter);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        listaDeNotas.setLayoutManager(linearLayoutManager);
+    }
+
+    private void configuraBotaoInsereNovaNota() {
         TextView botaoInsereNota = findViewById(R.id.lista_notas_insere_nota);
         botaoInsereNota.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,13 +60,5 @@ public class ListaDeNotasActivity extends AppCompatActivity {
                 startActivity(vaiParaInsereNotaActivity);
             }
         });
-
-        NotaDao dao = new NotaDao();
-        List<Nota> todasNotas = dao.todos();
-
-        adapter = new AdapterRecyclerview(todasNotas, this);
-
-        RecyclerView listaDeNotas = findViewById(R.id.lista_notas_recyclerView);
-        listaDeNotas.setAdapter(adapter);
     }
 }
