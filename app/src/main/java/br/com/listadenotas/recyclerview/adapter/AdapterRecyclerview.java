@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,9 +34,16 @@ public class AdapterRecyclerview extends RecyclerView.Adapter {
         return new notaViewHolder(viewCriada);
     }
 
+    //Quando chegamos nesse método, recebemos um ViewHolder nos parâmetros. Esse viewHolder é a view "Atual" que precisa receber as informações. Então usamos a referência "holder"
+    //Para mandar as informações que queremos. Então pegamos o espaço que queremos preencher, a partir do layout da lista definido no onCreateViewHolder, e setamos o texto a partir
+    //Da nota dentro de sua posição
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+        Nota nota = notas.get(position);
+        TextView tituloDoItem = holder.itemView.findViewById(R.id.item_recyclerview_titulo);
+        tituloDoItem.setText(nota.getTitulo());
+        TextView descricaoDoItem = holder.itemView.findViewById(R.id.item_recyclerview_descricao);
+        descricaoDoItem.setText(nota.getDescricao());
     }
 
     @Override

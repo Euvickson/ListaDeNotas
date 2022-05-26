@@ -47,12 +47,13 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         RecyclerView listaDeNotas = findViewById(R.id.lista_notas_recyclerView);
         listaDeNotas.setAdapter(adapter);
 
+        //Com o LinearLayoutManager podemos setar a orientação da lista, se quisermos que ela seja horizontal só deveremos mandar, além do contexto, a constante e a direção da lista
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         listaDeNotas.setLayoutManager(linearLayoutManager);
     }
 
     private void configuraBotaoInsereNovaNota() {
-        TextView botaoInsereNota = findViewById(R.id.lista_notas_insere_nota);
+        TextView botaoInsereNota = findViewById(R.id.lista_notas_nova_nota);
         botaoInsereNota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
