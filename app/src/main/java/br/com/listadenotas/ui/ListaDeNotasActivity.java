@@ -30,7 +30,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
         NotaDao dao = new NotaDao();
 
-        for(int i = 0; i<= 1000; i++){
+        for(int i = 0; i<= 10; i++){
             Nota nota = new Nota("Título " + i, "Descrição " + i);
             dao.insere(nota);
         }

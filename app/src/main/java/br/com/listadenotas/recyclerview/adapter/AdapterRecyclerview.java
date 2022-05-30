@@ -14,7 +14,7 @@ import java.util.List;
 import br.com.listadenotas.R;
 import br.com.listadenotas.model.Nota;
 
-public class AdapterRecyclerview extends RecyclerView.Adapter {
+public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclerview.NotaViewHolder> {
 
     private final List<Nota> notas;
     private final Context context;
@@ -29,21 +29,23 @@ public class AdapterRecyclerview extends RecyclerView.Adapter {
     //
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AdapterRecyclerview.NotaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View viewCriada = LayoutInflater.from(context).inflate(R.layout.item_recycler_view, parent, false);
-        return new notaViewHolder(viewCriada);
+        return new NotaViewHolder(viewCriada);
     }
 
     //Quando chegamos nesse método, recebemos um ViewHolder nos parâmetros. Esse viewHolder é a view "Atual" que precisa receber as informações. Então usamos a referência "holder"
     //Para mandar as informações que queremos. Então pegamos o espaço que queremos preencher, a partir do layout da lista definido no onCreateViewHolder, e setamos o texto a partir
     //Da nota dentro de sua posição
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AdapterRecyclerview.NotaViewHolder holder, int position) {
         Nota nota = notas.get(position);
-        TextView tituloDoItem = holder.itemView.findViewById(R.id.item_recyclerview_titulo);
-        tituloDoItem.setText(nota.getTitulo());
-        TextView descricaoDoItem = holder.itemView.findViewById(R.id.item_recyclerview_descricao);
-        descricaoDoItem.setText(nota.getDescricao());
+
+        //Trabalhar buscando as view sempre que o onBindViewHolder for chhamado, pode ser um pouco custoso a depender dos tipos de view que a gente estiver trabalhando, logo, é bom
+        //delegar essa responsabilidade ao NotaViewHolder que já terá as views buscadas e prontas para receberem essas informações, evitando custo na performance
+
+        //Podemos mandar a nossa classe "NotaViewHolder" dentro do extends, para indicar qual que é o viewHolder com o qual iremos trabalhar. E para evitar de fazer o cast
+        holder.vincula(nota);
     }
 
     @Override
@@ -51,9 +53,20 @@ public class AdapterRecyclerview extends RecyclerView.Adapter {
         return notas.size();
     }
 
-    private class notaViewHolder extends RecyclerView.ViewHolder {
-        public notaViewHolder(@NonNull View itemView) {
+    class NotaViewHolder extends RecyclerView.ViewHolder {
+
+        private final TextView titulo;
+        private final TextView descricao;
+
+        public NotaViewHolder(@NonNull View itemView) {
             super(itemView);
+            titulo = itemView.findViewById(R.id.item_recyclerview_titulo);
+            descricao = itemView.findViewById(R.id.item_recyclerview_descricao);
+        }
+
+        public void vincula(Nota nota){
+            titulo.setText(nota.getTitulo());
+            descricao.setText(nota.getDescricao());
         }
     }
 }
