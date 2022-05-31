@@ -41,13 +41,12 @@ public class InsereNotaActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    //Esse método é o reponsável por identificar se algum menu foi tocado. Só é preciso identificar qual o menu foi clicado.
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.menu_salvar_insere_nota){
-            String tituloCriado = titulo.getText().toString();
-            String descricaoCriada = descricao.getText().toString();
-            Nota nota = new Nota(tituloCriado, descricaoCriada);
-            dao.insere(nota);
+            Nota notaCriada = new Nota(titulo.getText().toString(), descricao.getText().toString());
+            dao.insere(notaCriada);
             finish();
         }
         return super.onOptionsItemSelected(item);
