@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.com.listadenotas.DAO.NotaDao;
@@ -20,6 +22,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
     public static final String TITULO_APPBAR = "Notas";
     private AdapterRecyclerview adapter;
+    private List<Nota> todasNotas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +38,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
             dao.insere(nota);
         }
 
-        List<Nota> todasNotas = dao.todos();
+        todasNotas = dao.todos();
 
         configuraRecyclerView(todasNotas);
 
@@ -58,16 +61,20 @@ public class ListaDeNotasActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent vaiParaInsereNotaActivity = new Intent(ListaDeNotasActivity.this, InsereNotaActivity.class);
-                startActivity(vaiParaInsereNotaActivity);
+
+                //Essa é uma maneira de enviar um intent esperando um resultado. Esse método foi descontinuado, é necessário atualizar
+                startActivityForResult(vaiParaInsereNotaActivity, 1);
             }
         });
     }
 
     @Override
-    protected void onResume() {
-        NotaDao dao = new NotaDao();
-        List<Nota> todasNotas = dao.todos();
-        configuraRecyclerView(todasNotas);
-        super.onResume();
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if(requestCode == 1 && resultCode == 2 && data.hasExtra("nota")){
+            Nota notaRecebida = (Nota) data.getSerializableExtra("nota");
+            new NotaDao().insere(notaRecebida);
+            adapter.insereNotaNova(notaRecebida);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

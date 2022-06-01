@@ -1,5 +1,6 @@
 package br.com.listadenotas.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,7 +47,12 @@ public class InsereNotaActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.menu_salvar_insere_nota){
             Nota notaCriada = new Nota(titulo.getText().toString(), descricao.getText().toString());
-            dao.insere(notaCriada);
+
+            Intent resultadoDaInserção = new Intent();
+            resultadoDaInserção.putExtra("nota", notaCriada);
+
+            //Esse é o método utilizado para responder ao startActivityForResult, enviando uma intent e o código de resultado
+            setResult(2, resultadoDaInserção);
             finish();
         }
         return super.onOptionsItemSelected(item);

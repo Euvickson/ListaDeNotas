@@ -1,6 +1,8 @@
 package br.com.listadenotas.model;
 
-public class Nota {
+import java.io.Serializable;
+
+public class Nota implements Serializable {
 
     private String titulo;
     private String descricao;
