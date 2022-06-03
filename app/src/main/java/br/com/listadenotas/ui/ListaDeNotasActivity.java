@@ -1,7 +1,8 @@
 package br.com.listadenotas.ui;
 
-import static br.com.listadenotas.ui.InsereNotaActivity.CHAVE_NOTA;
-import static br.com.listadenotas.ui.InsereNotaActivity.CODIGO_RESULTADO_NOTA_CRIADA;
+import static br.com.listadenotas.ui.NotaActivityConstantes.CHAVE_NOTA;
+import static br.com.listadenotas.ui.NotaActivityConstantes.CODIGO_REQUISICAO_ENVIA_NOTA;
+import static br.com.listadenotas.ui.NotaActivityConstantes.CODIGO_RESULTADO_NOTA_CRIADA;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +24,6 @@ import br.com.listadenotas.recyclerview.adapter.AdapterRecyclerview;
 public class ListaDeNotasActivity extends AppCompatActivity {
 
     public static final String TITULO_APPBAR = "Notas";
-    public static final int CODIGO_REQUISICAO_ENVIA_NOTA = 1;
     private AdapterRecyclerview adapter;
 
     @Override
@@ -41,7 +41,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     }
 
     private void AdicionaNotasDeExemplo(NotaDao dao) {
-        for(int i = 0; i<= 10; i++){
+        for (int i = 0; i <= 10; i++) {
             Nota nota = new Nota("Título " + i, "Descrição " + i);
             dao.insere(nota);
         }
@@ -74,7 +74,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if(verificaRetornoComNota(requestCode, resultCode, data)){
+        if (verificaRetornoComNota(requestCode, resultCode, data)) {
             Nota notaRecebida = (Nota) data.getSerializableExtra("nota");
             new NotaDao().insere(notaRecebida);
             adapter.insereNotaNova(notaRecebida);

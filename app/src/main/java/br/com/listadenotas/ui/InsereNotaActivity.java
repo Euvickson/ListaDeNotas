@@ -1,5 +1,8 @@
 package br.com.listadenotas.ui;
 
+import static br.com.listadenotas.ui.NotaActivityConstantes.CHAVE_NOTA;
+import static br.com.listadenotas.ui.NotaActivityConstantes.CODIGO_RESULTADO_NOTA_CRIADA;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -15,8 +18,6 @@ import br.com.listadenotas.model.Nota;
 public class InsereNotaActivity extends AppCompatActivity {
 
     public static final String TITULO_APPBAR = "Insere nota";
-    public static final String CHAVE_NOTA = "nota";
-    public static final int CODIGO_RESULTADO_NOTA_CRIADA = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
