@@ -45,11 +45,11 @@ public class InsereNotaActivity extends AppCompatActivity {
     }
 
     private void retornaNotaParaResponderStartActivityForResult(Nota notaCriada) {
-        Intent resultadoDaInserção = new Intent();
-        resultadoDaInserção.putExtra(CHAVE_NOTA, notaCriada);
+        Intent resultadoDaInsercao = new Intent();
+        resultadoDaInsercao.putExtra(CHAVE_NOTA, notaCriada);
 
         //Esse é o método utilizado para responder ao startActivityForResult, enviando uma intent e o código de resultado
-        setResult(CODIGO_RESULTADO_NOTA_CRIADA, resultadoDaInserção);
+        setResult(CODIGO_RESULTADO_NOTA_CRIADA, resultadoDaInsercao);
     }
 
     private boolean verificaMenuTocado(@NonNull MenuItem item) {
