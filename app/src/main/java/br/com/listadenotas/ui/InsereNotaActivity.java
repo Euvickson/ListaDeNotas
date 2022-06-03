@@ -4,36 +4,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import br.com.listadenotas.DAO.NotaDao;
 import br.com.listadenotas.R;
 import br.com.listadenotas.model.Nota;
 
 public class InsereNotaActivity extends AppCompatActivity {
 
-    private EditText titulo;
-    private EditText descricao;
-    private NotaDao dao;
+    public static final String TITULO_APPBAR = "Insere nota";
+    public static final String CHAVE_NOTA = "nota";
+    public static final int CODIGO_RESULTADO_NOTA_CRIADA = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insere_nota);
 
-        setTitle("Insere nota");
-        dao = new NotaDao();
-
-        inicializaCampos();
-    }
-
-    private void inicializaCampos() {
-        titulo = findViewById(R.id.insere_nota_titulo);
-        descricao = findViewById(R.id.insere_nota_descricao);
+        setTitle(TITULO_APPBAR);
     }
 
     @Override
@@ -45,16 +35,30 @@ public class InsereNotaActivity extends AppCompatActivity {
     //Esse método é o reponsável por identificar se algum menu foi tocado. Só é preciso identificar qual o menu foi clicado.
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if(item.getItemId() == R.id.menu_salvar_insere_nota){
-            Nota notaCriada = new Nota(titulo.getText().toString(), descricao.getText().toString());
-
-            Intent resultadoDaInserção = new Intent();
-            resultadoDaInserção.putExtra("nota", notaCriada);
-
-            //Esse é o método utilizado para responder ao startActivityForResult, enviando uma intent e o código de resultado
-            setResult(2, resultadoDaInserção);
+        if (verificaMenuTocado(item)) {
+            Nota notaCriada = criaNota();
+            retornaNotaParaResponderStartActivityForResult(notaCriada);
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void retornaNotaParaResponderStartActivityForResult(Nota notaCriada) {
+        Intent resultadoDaInserção = new Intent();
+        resultadoDaInserção.putExtra(CHAVE_NOTA, notaCriada);
+
+        //Esse é o método utilizado para responder ao startActivityForResult, enviando uma intent e o código de resultado
+        setResult(CODIGO_RESULTADO_NOTA_CRIADA, resultadoDaInserção);
+    }
+
+    private boolean verificaMenuTocado(@NonNull MenuItem item) {
+        return item.getItemId() == R.id.menu_salvar_insere_nota;
+    }
+
+    @NonNull
+    private Nota criaNota() {
+        EditText titulo = findViewById(R.id.insere_nota_titulo);
+        EditText descricao = findViewById(R.id.insere_nota_descricao);
+        return new Nota(titulo.getText().toString(), descricao.getText().toString());
     }
 }
