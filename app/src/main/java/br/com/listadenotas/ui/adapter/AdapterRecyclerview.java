@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,7 +62,12 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
 
     public void insereNotaNova(Nota nota) {
         notas.add(nota);
-        notifyDataSetChanged();
+        notifyItemInserted(notas.size());
+    }
+
+    public void altera(int posicao, Nota nota) {
+        notas.set(posicao, nota);
+        notifyItemChanged(posicao);
     }
 
     class NotaViewHolder extends RecyclerView.ViewHolder {
@@ -81,7 +87,10 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
                 public void onClick(View view) {
                     //Possibilitamos a ação de implementação para qualquer um que chamar o método. Ao invés de fazer uma implementação específica, delegamos a implementação para quem
                     //Chama.
-                    onItemClickListener.onItemClick(nota);
+
+                    //Para a posição, poderíamos trabalhar da mesma maneira que a nota, transformando em um atributo de classe e enviando, através do método "vincula" a posição vinda
+                    //do onBindViewHolder, mas o próprio viewHolder conhece a sua posição. Então é só chamar o método getAdapterPosition que estamos enviando essa informação.
+                    onItemClickListener.onItemClick(nota, getAdapterPosition());
                 }
             });
         }

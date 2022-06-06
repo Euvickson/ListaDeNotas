@@ -1,6 +1,7 @@
 package br.com.listadenotas.ui.activity;
 
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CHAVE_NOTA;
+import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CHAVE_POSICAO;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_REQUISICAO_EDITA_NOTA;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_REQUISICAO_ENVIA_NOTA;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_RESULTADO_NOTA_CRIADA;
@@ -60,19 +61,6 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         configuraLayoutManager(listaDeNotas);
     }
 
-    private void configuraAdapter(List<Nota> todasNotas, RecyclerView listaDeNotas) {
-        adapter = new AdapterRecyclerview(todasNotas, this);
-        listaDeNotas.setAdapter(adapter);
-        adapter.setOnItemClickListener(new onItemClickListener() {
-            @Override
-            public void onItemClick(Nota nota) {
-                Intent inicializaEdicaoDeNota = new Intent(ListaDeNotasActivity.this, InsereNotaActivity.class);
-                inicializaEdicaoDeNota.putExtra(CHAVE_NOTA, nota);
-                startActivityForResult(inicializaEdicaoDeNota, CODIGO_REQUISICAO_EDITA_NOTA);
-            }
-        });
-    }
-
     private void configuraLayoutManager(RecyclerView listaDeNotas) {
         //Com o LinearLayoutManager podemos setar a orientação da lista, se quisermos que ela seja horizontal só deveremos mandar, além do contexto, a constante e a direção da lista
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -91,6 +79,20 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         });
     }
 
+    private void configuraAdapter(List<Nota> todasNotas, RecyclerView listaDeNotas) {
+        adapter = new AdapterRecyclerview(todasNotas, this);
+        listaDeNotas.setAdapter(adapter);
+        adapter.setOnItemClickListener(new onItemClickListener() {
+            @Override
+            public void onItemClick(Nota nota, int posicao) {
+                Intent inicializaEdicaoDeNota = new Intent(ListaDeNotasActivity.this, InsereNotaActivity.class);
+                inicializaEdicaoDeNota.putExtra(CHAVE_NOTA, nota);
+                inicializaEdicaoDeNota.putExtra(CHAVE_POSICAO, posicao);
+                startActivityForResult(inicializaEdicaoDeNota, CODIGO_REQUISICAO_EDITA_NOTA);
+            }
+        });
+    }
+
     //A onActivityResult é onde trabalhamos os objetos recebidos a partir do startActivityForResult. Nele temos a capacidade de checar vários objetos, a partir do código de requisição,
     //do código de resultado e da chave string que recebemos.
     @Override
@@ -98,16 +100,23 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         if (verificaRetornoComNotaNova(requestCode, resultCode, data)) {
             Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
             new NotaDao().insere(notaRecebida);
+            //aqui vamos notificar o adapter da alteração, para isso é necessário criar o método para inserir a nota na lista interna do adapter e ao mesmo tempo notificar a mudança
             adapter.insereNotaNova(notaRecebida);
         } else if (verificaRetornoDeNotaEditada(requestCode, resultCode, data)){
             Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
-            Toast.makeText(this, notaRecebida.getTitulo(), Toast.LENGTH_SHORT).show();
+            int posicaoRecebida = data.getIntExtra(CHAVE_POSICAO, -1);
+            new NotaDao().altera(posicaoRecebida, notaRecebida);
+            adapter.altera(posicaoRecebida, notaRecebida);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
     private boolean verificaRetornoDeNotaEditada(int requestCode, int resultCode, @Nullable Intent data) {
-        return vertificaCodigoRequisicaoNotaEditada(requestCode) && verificaCodigoResultado(resultCode) && verificaIntent(data);
+        return vertificaCodigoRequisicaoNotaEditada(requestCode) && verificaCodigoResultado(resultCode) && verificaIntent(data) && verificaPosicaoRetornada(data);
+    }
+
+    private boolean verificaPosicaoRetornada(@Nullable Intent data) {
+        return data.hasExtra(CHAVE_POSICAO);
     }
 
     private boolean vertificaCodigoRequisicaoNotaEditada(int requestCode) {
