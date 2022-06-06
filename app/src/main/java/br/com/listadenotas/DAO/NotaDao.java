@@ -16,4 +16,7 @@ public class NotaDao {
     public void insere(Nota nota) {
         notas.add(nota);
     }
+
+    public void edita(Nota nota){
+    }
 }

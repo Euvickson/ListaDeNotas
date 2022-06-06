@@ -17,14 +17,25 @@ import br.com.listadenotas.model.Nota;
 
 public class InsereNotaActivity extends AppCompatActivity {
 
-    public static final String TITULO_APPBAR = "Insere nota";
+    public static final String TITULO_APPBAR_NOVA_NOTA = "Insere nota";
+    public static final String TITULO_APPBAR_EDITA_NOTA = "Editando nota";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insere_nota);
 
-        setTitle(TITULO_APPBAR);
+        Intent intentRecebida = getIntent();
+        if(intentRecebida.hasExtra(CHAVE_NOTA)){
+            setTitle(TITULO_APPBAR_EDITA_NOTA);
+            Nota notaRecebida = (Nota) intentRecebida.getSerializableExtra(CHAVE_NOTA);
+            EditText titulo = findViewById(R.id.insere_nota_titulo);
+            EditText descricao = findViewById(R.id.insere_nota_descricao);
+            titulo.setText(notaRecebida.getTitulo());
+            descricao.setText(notaRecebida.getDescricao());
+        } else {
+            setTitle(TITULO_APPBAR_NOVA_NOTA);
+        }
     }
 
     @Override
