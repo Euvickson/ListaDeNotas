@@ -1,4 +1,4 @@
-package br.com.listadenotas.ui;
+package br.com.listadenotas.ui.activity;
 
 public interface NotaActivityConstantes {
     public static final int CODIGO_REQUISICAO_ENVIA_NOTA = 1;

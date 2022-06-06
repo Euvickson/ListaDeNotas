@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ListaDeNotas">
         <activity
-            android:name=".ui.InsereNotaActivity"
+            android:name=".ui.activity.InsereNotaActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.ListaDeNotasActivity"
+            android:name=".ui.activity.ListaDeNotasActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

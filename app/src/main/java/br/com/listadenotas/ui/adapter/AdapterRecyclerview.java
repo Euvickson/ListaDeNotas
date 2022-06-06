@@ -1,4 +1,4 @@
-package br.com.listadenotas.recyclerview.adapter;
+package br.com.listadenotas.ui.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -18,10 +18,16 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
 
     private final List<Nota> notas;
     private final Context context;
+    private br.com.listadenotas.ui.adapter.listener.onItemClickListener onItemClickListener;
 
     public AdapterRecyclerview(List<Nota> notas, Context context) {
         this.notas = notas;
         this.context = context;
+    }
+
+    //Precisamos fazer o set para agir conforme já é costume ao implementar algum tipo de ação do clique, nesse caso, um setOnItemClickListener.
+    public void setOnItemClickListener(br.com.listadenotas.ui.adapter.listener.onItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     //é chamado apenas uma vez, e APENAS cria todas as views necessárias para aparecerem na tela do usuário. As informações de cada item são colocados pelo onBindViewHolder.
@@ -67,6 +73,15 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
             super(itemView);
             titulo = itemView.findViewById(R.id.item_recyclerview_titulo);
             descricao = itemView.findViewById(R.id.item_recyclerview_descricao);
+            //Aqui setamos o click do item, com a setOnClickListener, que é uma função que todos possuem, mas dentro dele nós chamamos o onItemClickListener.
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Possibilitamos a ação de implementação para qualquer um que chamar o método. Ao invés de fazer uma implementação específica, delegamos a implementação para quem
+                    //Chama
+                    onItemClickListener.onItemClick();
+                }
+            });
         }
 
         public void vincula(Nota nota){

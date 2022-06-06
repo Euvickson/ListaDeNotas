@@ -1,7 +1,7 @@
-package br.com.listadenotas.ui;
+package br.com.listadenotas.ui.activity;
 
-import static br.com.listadenotas.ui.NotaActivityConstantes.CHAVE_NOTA;
-import static br.com.listadenotas.ui.NotaActivityConstantes.CODIGO_RESULTADO_NOTA_CRIADA;
+import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CHAVE_NOTA;
+import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_RESULTADO_NOTA_CRIADA;
 
 import android.content.Intent;
 import android.os.Bundle;

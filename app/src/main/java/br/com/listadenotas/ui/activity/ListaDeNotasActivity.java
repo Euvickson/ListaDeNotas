@@ -1,13 +1,14 @@
-package br.com.listadenotas.ui;
+package br.com.listadenotas.ui.activity;
 
-import static br.com.listadenotas.ui.NotaActivityConstantes.CHAVE_NOTA;
-import static br.com.listadenotas.ui.NotaActivityConstantes.CODIGO_REQUISICAO_ENVIA_NOTA;
-import static br.com.listadenotas.ui.NotaActivityConstantes.CODIGO_RESULTADO_NOTA_CRIADA;
+import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CHAVE_NOTA;
+import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_REQUISICAO_ENVIA_NOTA;
+import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_RESULTADO_NOTA_CRIADA;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,7 +20,8 @@ import java.util.List;
 import br.com.listadenotas.DAO.NotaDao;
 import br.com.listadenotas.R;
 import br.com.listadenotas.model.Nota;
-import br.com.listadenotas.recyclerview.adapter.AdapterRecyclerview;
+import br.com.listadenotas.ui.adapter.AdapterRecyclerview;
+import br.com.listadenotas.ui.adapter.listener.onItemClickListener;
 
 public class ListaDeNotasActivity extends AppCompatActivity {
 
@@ -48,10 +50,23 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     }
 
     private void configuraRecyclerView(List<Nota> todasNotas) {
-        adapter = new AdapterRecyclerview(todasNotas, this);
         RecyclerView listaDeNotas = findViewById(R.id.lista_notas_recyclerView);
-        listaDeNotas.setAdapter(adapter);
+        configuraAdapter(todasNotas, listaDeNotas);
+        //Se tentarmos fazer a listaDeNotas.setOnItemClickListener, iremos ver que essa função não existe, apenas há a implementação padrão que toda view tem, com o setOnClickListener
+        //Logo teremos que implementar por nós mesmos como a lista se comportará ao receber o clique em um de seus itens. Se pensarmos no RecyclerView, temos os viewHolders que
+        //Representam as views dentro da lista, mas a melhor maneira seria uma interface.
         configuraLayoutManager(listaDeNotas);
+    }
+
+    private void configuraAdapter(List<Nota> todasNotas, RecyclerView listaDeNotas) {
+        adapter = new AdapterRecyclerview(todasNotas, this);
+        listaDeNotas.setAdapter(adapter);
+        adapter.setOnItemClickListener(new onItemClickListener() {
+            @Override
+            public void onItemClick() {
+                Toast.makeText(ListaDeNotasActivity.this, "ViewHolder clicado na activity", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void configuraLayoutManager(RecyclerView listaDeNotas) {
