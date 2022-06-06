@@ -68,6 +68,8 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
 
         private final TextView titulo;
         private final TextView descricao;
+        //Como vamos precisar enviar a nota como parâmetro do onItemClickListener, tornamos a nota um atributo da classe viewHolder para conseguir trabalhar com ela.
+        private Nota nota;
 
         public NotaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -78,13 +80,18 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
                 @Override
                 public void onClick(View view) {
                     //Possibilitamos a ação de implementação para qualquer um que chamar o método. Ao invés de fazer uma implementação específica, delegamos a implementação para quem
-                    //Chama
-                    onItemClickListener.onItemClick();
+                    //Chama.
+                    onItemClickListener.onItemClick(nota);
                 }
             });
         }
 
         public void vincula(Nota nota){
+            this.nota = nota;
+            preencheCampos(nota);
+        }
+
+        private void preencheCampos(Nota nota) {
             titulo.setText(nota.getTitulo());
             descricao.setText(nota.getDescricao());
         }

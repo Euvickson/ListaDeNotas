@@ -63,8 +63,8 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         listaDeNotas.setAdapter(adapter);
         adapter.setOnItemClickListener(new onItemClickListener() {
             @Override
-            public void onItemClick() {
-                Toast.makeText(ListaDeNotasActivity.this, "ViewHolder clicado na activity", Toast.LENGTH_SHORT).show();
+            public void onItemClick(Nota nota) {
+                Toast.makeText(ListaDeNotasActivity.this, nota.getTitulo(), Toast.LENGTH_SHORT).show();
             }
         });
     }
