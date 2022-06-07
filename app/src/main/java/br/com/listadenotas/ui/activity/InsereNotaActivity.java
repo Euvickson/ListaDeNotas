@@ -3,6 +3,7 @@ package br.com.listadenotas.ui.activity;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CHAVE_NOTA;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CHAVE_POSICAO;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_RESULTADO_NOTA_CRIADA;
+import static br.com.listadenotas.ui.activity.NotaActivityConstantes.POSICAO_INVALIDA;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,7 +23,6 @@ public class InsereNotaActivity extends AppCompatActivity {
     public static final String TITULO_APPBAR_EDITA_NOTA = "Editando nota";
     //Qualquer variável dentro do java vem com um valor padrão inicializado, nesse caso o 0, logo é interessante inicializar a variável com valor inválido
     //No caso de ocorrer algum problema na chamada do getIntExtra e o valor enviado pela variável não seja 0, que é uma posição válida.
-    public static final int POSICAO_INVALIDA = -1;
     private int posicaoRecebida = POSICAO_INVALIDA;
     private EditText titulo;
     private EditText descricao;

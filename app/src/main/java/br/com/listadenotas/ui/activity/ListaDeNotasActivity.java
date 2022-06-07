@@ -5,11 +5,13 @@ import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CHAVE_POSIC
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_REQUISICAO_EDITA_NOTA;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_REQUISICAO_ENVIA_NOTA;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_RESULTADO_NOTA_CRIADA;
+import static br.com.listadenotas.ui.activity.NotaActivityConstantes.POSICAO_INVALIDA;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -70,11 +72,15 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         botaoInsereNota.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent vaiParaInsereNotaActivity = new Intent(ListaDeNotasActivity.this, InsereNotaActivity.class);
-                //Essa é uma maneira de enviar um intent esperando um resultado. Esse método foi descontinuado, é necessário atualizar
-                startActivityForResult(vaiParaInsereNotaActivity, CODIGO_REQUISICAO_ENVIA_NOTA);
+                inicializaInsereNotaActivityInsereNovaNota();
             }
         });
+    }
+
+    private void inicializaInsereNotaActivityInsereNovaNota() {
+        Intent vaiParaInsereNotaActivity = new Intent(ListaDeNotasActivity.this, InsereNotaActivity.class);
+        //Essa é uma maneira de enviar um intent esperando um resultado. Esse método foi descontinuado, é necessário atualizar
+        startActivityForResult(vaiParaInsereNotaActivity, CODIGO_REQUISICAO_ENVIA_NOTA);
     }
 
     private void configuraAdapter(List<Nota> todasNotas, RecyclerView listaDeNotas) {
@@ -87,12 +93,16 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         adapter.setOnItemClickListener(new onItemClickListener() {
             @Override
             public void onItemClick(Nota nota, int posicao) {
-                Intent inicializaEdicaoDeNota = new Intent(ListaDeNotasActivity.this, InsereNotaActivity.class);
-                inicializaEdicaoDeNota.putExtra(CHAVE_NOTA, nota);
-                inicializaEdicaoDeNota.putExtra(CHAVE_POSICAO, posicao);
-                startActivityForResult(inicializaEdicaoDeNota, CODIGO_REQUISICAO_EDITA_NOTA);
+                inicializaInsereNotaActivityComEdicao(nota, posicao);
             }
         });
+    }
+
+    private void inicializaInsereNotaActivityComEdicao(Nota nota, int posicao) {
+        Intent inicializaEdicaoDeNota = new Intent(ListaDeNotasActivity.this, InsereNotaActivity.class);
+        inicializaEdicaoDeNota.putExtra(CHAVE_NOTA, nota);
+        inicializaEdicaoDeNota.putExtra(CHAVE_POSICAO, posicao);
+        startActivityForResult(inicializaEdicaoDeNota, CODIGO_REQUISICAO_EDITA_NOTA);
     }
 
     //A onActivityResult é onde trabalhamos os objetos recebidos a partir do startActivityForResult. Nele temos a capacidade de checar vários objetos, a partir do código de requisição,
@@ -101,24 +111,36 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (verificaRetornoComNotaNova(requestCode, resultCode, data)) {
             Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
-            new NotaDao().insere(notaRecebida);
-            //aqui vamos notificar o adapter da alteração, para isso é necessário criar o método para inserir a nota na lista interna do adapter e ao mesmo tempo notificar a mudança
-            adapter.insereNotaNova(notaRecebida);
-        } else if (verificaRetornoDeNotaEditada(requestCode, resultCode, data)){
+            insereNotaNova(notaRecebida);
+        } else if (verificaRetornoDeNotaEditada(requestCode, resultCode, data)) {
             Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
-            int posicaoRecebida = data.getIntExtra(CHAVE_POSICAO, -1);
-            new NotaDao().altera(posicaoRecebida, notaRecebida);
-            adapter.altera(posicaoRecebida, notaRecebida);
+            int posicaoRecebida = data.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
+            if (verificaPosicaoValida(posicaoRecebida)) {
+                editaNota(notaRecebida, posicaoRecebida);
+            } else {
+                Toast.makeText(this, "Ocorreu um problema na alteração da nota", Toast.LENGTH_SHORT).show();
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private boolean verificaRetornoDeNotaEditada(int requestCode, int resultCode, @Nullable Intent data) {
-        return vertificaCodigoRequisicaoNotaEditada(requestCode) && verificaCodigoResultado(resultCode) && verificaIntent(data) && verificaPosicaoRetornada(data);
+    private void insereNotaNova(Nota nota) {
+        new NotaDao().insere(nota);
+        //aqui vamos notificar o adapter da alteração, para isso é necessário criar o método para inserir a nota na lista interna do adapter e ao mesmo tempo notificar a mudança
+        adapter.insereNotaNova(nota);
     }
 
-    private boolean verificaPosicaoRetornada(@Nullable Intent data) {
-        return data.hasExtra(CHAVE_POSICAO);
+    private void editaNota(Nota nota, int posicao) {
+        new NotaDao().altera(posicao, nota);
+        adapter.altera(posicao, nota);
+    }
+
+    private boolean verificaPosicaoValida(int posicaoRecebida) {
+        return posicaoRecebida > POSICAO_INVALIDA;
+    }
+
+    private boolean verificaRetornoDeNotaEditada(int requestCode, int resultCode, @Nullable Intent data) {
+        return vertificaCodigoRequisicaoNotaEditada(requestCode) && verificaCodigoResultado(resultCode) && verificaIntent(data);
     }
 
     private boolean vertificaCodigoRequisicaoNotaEditada(int requestCode) {
