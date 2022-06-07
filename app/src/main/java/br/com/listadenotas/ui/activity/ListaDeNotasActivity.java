@@ -10,14 +10,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.io.Serializable;
 import java.util.List;
 
 import br.com.listadenotas.DAO.NotaDao;
@@ -82,6 +80,10 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     private void configuraAdapter(List<Nota> todasNotas, RecyclerView listaDeNotas) {
         adapter = new AdapterRecyclerview(todasNotas, this);
         listaDeNotas.setAdapter(adapter);
+        configuraToqueEmView();
+    }
+
+    private void configuraToqueEmView() {
         adapter.setOnItemClickListener(new onItemClickListener() {
             @Override
             public void onItemClick(Nota nota, int posicao) {
