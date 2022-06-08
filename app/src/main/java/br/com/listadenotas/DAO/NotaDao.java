@@ -1,6 +1,7 @@
 package br.com.listadenotas.DAO;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.listadenotas.model.Nota;
@@ -23,5 +24,9 @@ public class NotaDao {
 
     public void remove(int posicao) {
         notas.remove(posicao);
+    }
+
+    public void troca(int posicaoInicial, int posicaoFinal) {
+        Collections.swap(notas, posicaoInicial, posicaoFinal);
     }
 }

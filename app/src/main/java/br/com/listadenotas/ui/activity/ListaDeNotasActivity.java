@@ -57,11 +57,12 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     private void configuraRecyclerView(List<Nota> todasNotas) {
         RecyclerView listaDeNotas = findViewById(R.id.lista_notas_recyclerView);
         configuraAdapter(todasNotas, listaDeNotas);
-        //Se tentarmos fazer a listaDeNotas.setOnItemClickListener, iremos ver que essa função não existe, apenas há a implementação padrão que toda view tem, com o setOnClickListener
-        //Logo teremos que implementar por nós mesmos como a lista se comportará ao receber o clique em um de seus itens. Se pensarmos no RecyclerView, temos os viewHolders que
-        //Representam as views dentro da lista, mas a melhor maneira seria uma interface.
         configuraLayoutManager(listaDeNotas);
 
+        configuraItemTouchHelper(listaDeNotas);
+    }
+
+    private void configuraItemTouchHelper(RecyclerView listaDeNotas) {
         //Essa classe é específica do RecyclerView pra fazer essas configurações de animações. Ela dá um erro de compilação no construtor porque ela exige
         //que exista uma implementação de uma entidade chamada de Callback, que é responsável de fazer a configuração de deslize ou movimento.
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter));
@@ -94,6 +95,9 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
     private void configuraAdapter(List<Nota> todasNotas, RecyclerView listaDeNotas) {
         adapter = new AdapterRecyclerview(todasNotas, this);
+        //Se tentarmos fazer a listaDeNotas.setOnItemClickListener, iremos ver que essa função não existe, apenas há a implementação padrão que toda view tem, com o setOnClickListener
+        //Logo teremos que implementar por nós mesmos como a lista se comportará ao receber o clique em um de seus itens. Se pensarmos no RecyclerView, temos os viewHolders que
+        //Representam as views dentro da lista, mas a melhor maneira seria uma interface.
         listaDeNotas.setAdapter(adapter);
         configuraToqueEmView();
     }
