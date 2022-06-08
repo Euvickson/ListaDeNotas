@@ -2,9 +2,9 @@ package br.com.listadenotas.ui.activity;
 
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CHAVE_NOTA;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CHAVE_POSICAO;
-import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_RESULTADO_NOTA_CRIADA;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.POSICAO_INVALIDA;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -85,7 +85,7 @@ public class InsereNotaActivity extends AppCompatActivity {
         colocaExtraNoIntent(notaCriada, resultadoDaInsercao);
 
         //Esse é o método utilizado para responder ao startActivityForResult, enviando uma intent e o código de resultado
-        setResult(CODIGO_RESULTADO_NOTA_CRIADA, resultadoDaInsercao);
+        setResult(Activity.RESULT_OK, resultadoDaInsercao);
     }
 
     private void colocaExtraNoIntent(Nota notaCriada, Intent resultadoDaInsercao) {

@@ -4,9 +4,9 @@ import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CHAVE_NOTA;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CHAVE_POSICAO;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_REQUISICAO_EDITA_NOTA;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_REQUISICAO_ENVIA_NOTA;
-import static br.com.listadenotas.ui.activity.NotaActivityConstantes.CODIGO_RESULTADO_NOTA_CRIADA;
 import static br.com.listadenotas.ui.activity.NotaActivityConstantes.POSICAO_INVALIDA;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -59,6 +60,10 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         //Logo teremos que implementar por nós mesmos como a lista se comportará ao receber o clique em um de seus itens. Se pensarmos no RecyclerView, temos os viewHolders que
         //Representam as views dentro da lista, mas a melhor maneira seria uma interface.
         configuraLayoutManager(listaDeNotas);
+
+        //Essa classe é específica do RecyclerView pra fazer essas configurações de animações. Ela dá um erro de compilação no construtor porque ela exige
+        //que exista uma implementação de uma entidade chamada de Callback, que é responsável de fazer a configuração de deslize ou movimento.
+
     }
 
     private void configuraLayoutManager(RecyclerView listaDeNotas) {
@@ -107,18 +112,32 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
     //A onActivityResult é onde trabalhamos os objetos recebidos a partir do startActivityForResult. Nele temos a capacidade de checar vários objetos, a partir do código de requisição,
     //do código de resultado e da chave string que recebemos.
+
+    //Anteriormente estávamos utilizando uma constante criada "int CODIGO_RESULTADO_NOTA_CRIADA = 2;", mas o que é necessário saber é se o item foi criado
+    //portanto, vamos utilizar ocódigo de resultado padrão do próprio android, assim outro desenvolvedor não precisa saber qual o nosso código criado.
+    //Quando se utiliza a constante Activity.RESULT_OK o recomendado, pela própria android, é que seja verificado por último se o código deu certo depois de
+    //Verificar o outros itens. Isso se dá porque quando verificamos se há o objeto e se o código de requisição deu certo, estamos prontos pra tomar uma
+    //ação, mas as vezes essa ação não vai ser sempre um RESULT_OK, pode ser que seja um RESULT_CANCELED e dessa maneira estaríamos prontos pra mandar uma
+    //mensagem ou tomar alguma atitude.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (verificaRetornoComNotaNova(requestCode, resultCode, data)) {
-            Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
-            insereNotaNova(notaRecebida);
-        } else if (verificaRetornoDeNotaEditada(requestCode, resultCode, data)) {
-            Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
-            int posicaoRecebida = data.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
-            if (verificaPosicaoValida(posicaoRecebida)) {
-                editaNota(notaRecebida, posicaoRecebida);
-            } else {
-                Toast.makeText(this, "Ocorreu um problema na alteração da nota", Toast.LENGTH_SHORT).show();
+        if (verificaRetornoComNotaNova(requestCode, data)) {
+
+            if(verificaCodigoResultado(resultCode)){
+                Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
+                insereNotaNova(notaRecebida);
+            }
+
+        } else if (verificaRetornoDeNotaEditada(requestCode, data)) {
+            if(verificaCodigoResultado(resultCode)){
+                Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
+                int posicaoRecebida = data.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
+                //Caso haja um bug e a posição recebida seja inválida dentro dessa classe, ele manda uma mensagem através de um toast
+                if (verificaPosicaoValida(posicaoRecebida)) {
+                    editaNota(notaRecebida, posicaoRecebida);
+                } else {
+                    Toast.makeText(this, "Ocorreu um problema na alteração da nota", Toast.LENGTH_SHORT).show();
+                }
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
@@ -139,16 +158,16 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         return posicaoRecebida > POSICAO_INVALIDA;
     }
 
-    private boolean verificaRetornoDeNotaEditada(int requestCode, int resultCode, @Nullable Intent data) {
-        return vertificaCodigoRequisicaoNotaEditada(requestCode) && verificaCodigoResultado(resultCode) && verificaIntent(data);
+    private boolean verificaRetornoDeNotaEditada(int requestCode, @Nullable Intent data) {
+        return vertificaCodigoRequisicaoNotaEditada(requestCode) && verificaIntent(data);
     }
 
     private boolean vertificaCodigoRequisicaoNotaEditada(int requestCode) {
         return requestCode == CODIGO_REQUISICAO_EDITA_NOTA;
     }
 
-    private boolean verificaRetornoComNotaNova(int requestCode, int resultCode, @Nullable Intent data) {
-        return verificaCodigoDeRequisicao(requestCode) && verificaCodigoResultado(resultCode) && verificaIntent(data);
+    private boolean verificaRetornoComNotaNova(int requestCode, @Nullable Intent data) {
+        return verificaCodigoDeRequisicao(requestCode) && verificaIntent(data);
     }
 
     private boolean verificaCodigoDeRequisicao(int requestCode) {
@@ -156,7 +175,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     }
 
     private boolean verificaCodigoResultado(int resultCode) {
-        return resultCode == CODIGO_RESULTADO_NOTA_CRIADA;
+        return resultCode == Activity.RESULT_OK;
     }
 
     private boolean verificaIntent(@Nullable Intent data) {
