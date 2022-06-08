@@ -186,7 +186,8 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         return resultCode == Activity.RESULT_OK;
     }
 
+    //Ao trabalhar com intents, devemos ter o cuidado para não tomar nullPointerException, porque quando buscamos a data.hasExtra, podemos receber null
     private boolean verificaIntent(@Nullable Intent data) {
-        return data.hasExtra(CHAVE_NOTA);
+        return data != null && data.hasExtra(CHAVE_NOTA);
     }
 }
