@@ -41,17 +41,9 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         setTitle(TITULO_APPBAR);
 
         NotaDao dao = new NotaDao();
-        AdicionaNotasDeExemplo(dao);
         List<Nota> todasNotas = dao.todos();
         configuraRecyclerView(todasNotas);
         configuraBotaoInsereNovaNota();
-    }
-
-    private void AdicionaNotasDeExemplo(NotaDao dao) {
-        for (int i = 0; i <= 10; i++) {
-            Nota nota = new Nota("Título " + i, "Descrição " + i);
-            dao.insere(nota);
-        }
     }
 
     private void configuraRecyclerView(List<Nota> todasNotas) {

@@ -29,7 +29,7 @@
         android:background="@android:color/transparent"
         android:gravity="top"
         android:hint="Descrição"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/insere_nota_titulo"
         app:layout_constraintStart_toStartOf="@+id/insere_nota_titulo"

@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Usuario/StudioProjects/ListaDeNotas/app/src/main/res/layout/activity_insere_nota.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/Usuario/StudioProjects/ListaDeNotas/app/src/main/res/layout/activity_lista_de_notas.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/Usuario/StudioProjects/ListaDeNotas/app/src/main/res/layout/item_recycler_view.xml" value="0.17074275362318841" />
         <entry key="..\:/Victor/ProjetosAndroidStudio/ListadeNotas/app/src/main/res/drawable-anydpi/ic_action_salva_nota.xml" value="0.296" />
         <entry key="..\:/Victor/ProjetosAndroidStudio/ListadeNotas/app/src/main/res/drawable/ic_action_salva_nota.xml" value="0.296" />
         <entry key="..\:/Victor/ProjetosAndroidStudio/ListadeNotas/app/src/main/res/drawable/ic_launcher_background.xml" value="0.296" />
