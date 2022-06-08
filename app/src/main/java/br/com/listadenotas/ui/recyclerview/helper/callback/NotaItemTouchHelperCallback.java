@@ -4,7 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import br.com.listadenotas.DAO.NotaDao;
+import br.com.listadenotas.ui.recyclerview.adapter.AdapterRecyclerview;
+
 public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
+
+    private AdapterRecyclerview adapter;
+
+    public NotaItemTouchHelperCallback(AdapterRecyclerview adapter) {
+        this.adapter = adapter;
+    }
 
     //Esse método é resposável por definir o que vamos permitir de animação. Deslizar pra direita ou esquerda
     @Override
@@ -28,6 +37,13 @@ public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
     //Nesse daqui é quando o moviemnto for de deslize. É como se fosse uma chamada de listeners.
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        //A princípio, ao tentar remover a nota fazendo uma instância do DAO, devemos mandar a posição, mas não temos essa posição, porém temos o viewHolder
+        //e ele mesmo sabe qual a posição do elemento deslizado na lista.
+        int posicaoDaNotaDeslizada = viewHolder.getAdapterPosition();
+        new NotaDao().remove(posicaoDaNotaDeslizada);
 
+        //Da mesma maneira que removemos o item no DAO, devemos remover no adapter pra ele mesmo atualizar a lista de itens, mas não possuímos o adapter,
+        //logo, vamos receber o adapter que queremos mexer, via construtor e torná-la um atributo de classe.
+        adapter.remove(posicaoDaNotaDeslizada);
     }
 }

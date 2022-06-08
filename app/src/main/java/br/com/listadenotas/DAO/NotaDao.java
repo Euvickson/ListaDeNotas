@@ -20,4 +20,8 @@ public class NotaDao {
     public void altera(int posicao, Nota nota){
         notas.set(posicao, nota);
     }
+
+    public void remove(int posicao) {
+        notas.remove(posicao);
+    }
 }

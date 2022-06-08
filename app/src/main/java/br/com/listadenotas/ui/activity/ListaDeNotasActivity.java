@@ -64,7 +64,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
         //Essa classe é específica do RecyclerView pra fazer essas configurações de animações. Ela dá um erro de compilação no construtor porque ela exige
         //que exista uma implementação de uma entidade chamada de Callback, que é responsável de fazer a configuração de deslize ou movimento.
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback());
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter));
 
         //Para anexar os comportamentos animados no recyclerView, usamos a referência do objeto itemTouchHelper e o método estático attachToRecyclerView
         itemTouchHelper.attachToRecyclerView(listaDeNotas);
@@ -127,13 +127,13 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (verificaRetornoComNotaNova(requestCode, data)) {
 
-            if(verificaCodigoResultado(resultCode)){
+            if (verificaCodigoResultado(resultCode)) {
                 Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
                 insereNotaNova(notaRecebida);
             }
 
         } else if (verificaRetornoDeNotaEditada(requestCode, data)) {
-            if(verificaCodigoResultado(resultCode)){
+            if (verificaCodigoResultado(resultCode)) {
                 Nota notaRecebida = (Nota) data.getSerializableExtra(CHAVE_NOTA);
                 int posicaoRecebida = data.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
                 //Caso haja um bug e a posição recebida seja inválida dentro dessa classe, ele manda uma mensagem através de um toast

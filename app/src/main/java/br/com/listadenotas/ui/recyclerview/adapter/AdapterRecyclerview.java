@@ -69,6 +69,11 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
         notifyItemChanged(posicao);
     }
 
+    public void remove(int posicao) {
+        notas.remove(posicao);
+        notifyItemRemoved(posicao);
+    }
+
     class NotaViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView titulo;
