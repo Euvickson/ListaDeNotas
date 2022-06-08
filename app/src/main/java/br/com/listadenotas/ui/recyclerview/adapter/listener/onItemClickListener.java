@@ -1,4 +1,4 @@
-package br.com.listadenotas.ui.adapter.listener;
+package br.com.listadenotas.ui.recyclerview.adapter.listener;
 
 import br.com.listadenotas.model.Nota;
 

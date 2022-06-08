@@ -1,11 +1,10 @@
-package br.com.listadenotas.ui.adapter;
+package br.com.listadenotas.ui.recyclerview.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +18,7 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
 
     private final List<Nota> notas;
     private final Context context;
-    private br.com.listadenotas.ui.adapter.listener.onItemClickListener onItemClickListener;
+    private br.com.listadenotas.ui.recyclerview.adapter.listener.onItemClickListener onItemClickListener;
 
     public AdapterRecyclerview(List<Nota> notas, Context context) {
         this.notas = notas;
@@ -27,7 +26,7 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
     }
 
     //Precisamos fazer o set para agir conforme já é costume ao implementar algum tipo de ação do clique, nesse caso, um setOnItemClickListener.
-    public void setOnItemClickListener(br.com.listadenotas.ui.adapter.listener.onItemClickListener onItemClickListener) {
+    public void setOnItemClickListener(br.com.listadenotas.ui.recyclerview.adapter.listener.onItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 

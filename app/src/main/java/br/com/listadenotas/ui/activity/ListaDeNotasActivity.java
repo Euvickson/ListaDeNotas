@@ -24,8 +24,9 @@ import java.util.List;
 import br.com.listadenotas.DAO.NotaDao;
 import br.com.listadenotas.R;
 import br.com.listadenotas.model.Nota;
-import br.com.listadenotas.ui.adapter.AdapterRecyclerview;
-import br.com.listadenotas.ui.adapter.listener.onItemClickListener;
+import br.com.listadenotas.ui.recyclerview.adapter.AdapterRecyclerview;
+import br.com.listadenotas.ui.recyclerview.adapter.listener.onItemClickListener;
+import br.com.listadenotas.ui.recyclerview.helper.callback.NotaItemTouchHelperCallback;
 
 public class ListaDeNotasActivity extends AppCompatActivity {
 
@@ -63,7 +64,10 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
         //Essa classe é específica do RecyclerView pra fazer essas configurações de animações. Ela dá um erro de compilação no construtor porque ela exige
         //que exista uma implementação de uma entidade chamada de Callback, que é responsável de fazer a configuração de deslize ou movimento.
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback());
 
+        //Para anexar os comportamentos animados no recyclerView, usamos a referência do objeto itemTouchHelper e o método estático attachToRecyclerView
+        itemTouchHelper.attachToRecyclerView(listaDeNotas);
     }
 
     private void configuraLayoutManager(RecyclerView listaDeNotas) {
