@@ -9,7 +9,6 @@ import static br.com.listadenotas.ui.activity.NotaActivityConstantes.POSICAO_INV
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,7 +24,6 @@ import br.com.listadenotas.DAO.NotaDao;
 import br.com.listadenotas.R;
 import br.com.listadenotas.model.Nota;
 import br.com.listadenotas.ui.recyclerview.adapter.AdapterRecyclerview;
-import br.com.listadenotas.ui.recyclerview.adapter.listener.onItemClickListener;
 import br.com.listadenotas.ui.recyclerview.helper.callback.NotaItemTouchHelperCallback;
 
 public class ListaDeNotasActivity extends AppCompatActivity {
@@ -71,12 +69,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
     private void configuraBotaoInsereNovaNota() {
         TextView botaoInsereNota = findViewById(R.id.lista_notas_nova_nota);
-        botaoInsereNota.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                inicializaInsereNotaActivityInsereNovaNota();
-            }
-        });
+        botaoInsereNota.setOnClickListener(view -> inicializaInsereNotaActivityInsereNovaNota());
     }
 
     private void inicializaInsereNotaActivityInsereNovaNota() {
@@ -95,12 +88,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     }
 
     private void configuraToqueEmView() {
-        adapter.setOnItemClickListener(new onItemClickListener() {
-            @Override
-            public void onItemClick(Nota nota, int posicao) {
-                inicializaInsereNotaActivityComEdicao(nota, posicao);
-            }
-        });
+        adapter.setOnItemClickListener(this::inicializaInsereNotaActivityComEdicao);
     }
 
     private void inicializaInsereNotaActivityComEdicao(Nota nota, int posicao) {
