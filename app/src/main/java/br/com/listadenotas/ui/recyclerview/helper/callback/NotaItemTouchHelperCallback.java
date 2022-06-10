@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import br.com.listadenotas.DAO.NotaDao;
+import br.com.listadenotas.dao.NotaDao;
 import br.com.listadenotas.ui.recyclerview.adapter.AdapterRecyclerview;
 
 public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {

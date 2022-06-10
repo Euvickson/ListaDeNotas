@@ -1,4 +1,4 @@
-package br.com.listadenotas.DAO;
+package br.com.listadenotas.dao;
 
 import java.util.ArrayList;
 import java.util.Collections;

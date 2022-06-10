@@ -20,7 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import br.com.listadenotas.DAO.NotaDao;
+import br.com.listadenotas.dao.NotaDao;
 import br.com.listadenotas.R;
 import br.com.listadenotas.model.Nota;
 import br.com.listadenotas.ui.recyclerview.adapter.AdapterRecyclerview;
