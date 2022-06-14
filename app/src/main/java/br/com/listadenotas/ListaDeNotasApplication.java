@@ -22,8 +22,11 @@ public class ListaDeNotasApplication extends Application {
         //Para fazer a inserção de uma lista de notas, é necessário uma instância do DAO, mas como ele é uma classe abstrata, não é possível fazer isso. O room por si mesmo já possui
         //uma maneira de fazer isso, através do Room.databaseBuilder, que vai devolver a instância necessária de database.
 
+        //Por padrão o Room não permite que sejam realizadas operações com o banco de dados na thread principal. A intenção é criar uma thread separada para conseguir seguir a
+        //atitude recomendada. Mas para objetivo de teste, como ele é um builder, podemos usar a chamada encadeada .allowMainThreadQueries() para forçar essa atitude
+
         //Esse nome é o nome do arquivo que vai ser gerado e que vai manter os dados do banco de dados.
-        ListaDeNotasDatabase database = Room.databaseBuilder(this, ListaDeNotasDatabase.class, "ListaDeNotas.db").build();
+        ListaDeNotasDatabase database = Room.databaseBuilder(this, ListaDeNotasDatabase.class, "ListaDeNotas.db").allowMainThreadQueries().build();
 
         RoomNotaDAO dao = database.getNotaDao();
 

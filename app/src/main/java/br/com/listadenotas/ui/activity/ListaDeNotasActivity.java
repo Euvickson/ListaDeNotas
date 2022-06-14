@@ -41,7 +41,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
         setTitle(TITULO_APPBAR);
 
-        RoomNotaDAO dao = Room.databaseBuilder(this, ListaDeNotasDatabase.class, "ListaDeNotas.db").build().getNotaDao();
+        RoomNotaDAO dao = Room.databaseBuilder(this, ListaDeNotasDatabase.class, "ListaDeNotas.db").allowMainThreadQueries().build().getNotaDao();
         List<Nota> todasNotas = dao.todos();
         configuraRecyclerView(todasNotas);
         configuraBotaoInsereNovaNota();
