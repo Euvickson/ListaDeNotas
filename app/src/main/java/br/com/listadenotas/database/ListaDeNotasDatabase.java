@@ -3,6 +3,7 @@ package br.com.listadenotas.database;
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 
+import br.com.listadenotas.database.dao.RoomNotaDAO;
 import br.com.listadenotas.model.Nota;
 
 //Antes de iniciar qualquer configuração do Room dentro de um projeto, é necessário ler a documentação oficial, para ter noções dos conceitos básicos.
@@ -18,4 +19,5 @@ import br.com.listadenotas.model.Nota;
 //vamos utilizar classes DAO, que possuem os métodos necessários para trabalhar com os bancos de dados, assim como o DAO do projeto hoje
 @Database(entities = {Nota.class}, version = 1, exportSchema = false)
 public abstract class ListaDeNotasDatabase extends RoomDatabase {
+    public abstract RoomNotaDAO getNotaDao();
 }

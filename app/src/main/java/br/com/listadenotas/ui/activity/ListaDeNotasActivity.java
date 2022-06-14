@@ -17,11 +17,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
 import java.util.List;
 
 import br.com.listadenotas.dao.NotaDao;
 import br.com.listadenotas.R;
+import br.com.listadenotas.database.ListaDeNotasDatabase;
+import br.com.listadenotas.database.dao.RoomNotaDAO;
 import br.com.listadenotas.model.Nota;
 import br.com.listadenotas.ui.recyclerview.adapter.AdapterRecyclerview;
 import br.com.listadenotas.ui.recyclerview.helper.callback.NotaItemTouchHelperCallback;
@@ -38,7 +41,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
         setTitle(TITULO_APPBAR);
 
-        NotaDao dao = new NotaDao();
+        RoomNotaDAO dao = Room.databaseBuilder(this, ListaDeNotasDatabase.class, "ListaDeNotas.db").build().getNotaDao();
         List<Nota> todasNotas = dao.todos();
         configuraRecyclerView(todasNotas);
         configuraBotaoInsereNovaNota();
