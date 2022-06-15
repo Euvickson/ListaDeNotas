@@ -33,6 +33,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
     public static final String TITULO_APPBAR = "Notas";
     private AdapterRecyclerview adapter;
+    private RoomNotaDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +42,17 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
         setTitle(TITULO_APPBAR);
 
-        RoomNotaDAO dao = Room.databaseBuilder(this, ListaDeNotasDatabase.class, "ListaDeNotas.db").allowMainThreadQueries().build().getNotaDao();
+        /*A maneira de funcionar o aplicativo com o room é: 1: Buscar o database, 2: fazer a instância do DAO a partir do database, 3: Daí terá acesso aos comportamentos do db.
+
+        Para fazer a inserção de uma lista de notas, é necessário uma instância do DAO, mas como ele é uma classe abstrata, não é possível fazer isso. O room por si mesmo já possui
+        uma maneira de fazer isso, através do Room.databaseBuilder, que vai devolver a instância necessária de database.
+
+        Por padrão o Room não permite que sejam realizadas operações com o banco de dados na thread principal. A intenção é criar uma thread separada para conseguir seguir a
+        atitude recomendada. Mas para objetivo de teste, como ele é um builder, podemos usar a chamada encadeada .allowMainThreadQueries() para forçar essa atitude
+
+        Esse nome é o nome do arquivo que vai ser gerado e que vai manter os dados do banco de dados.*/
+        dao = Room.databaseBuilder(this, ListaDeNotasDatabase.class, "ListaDeNotas.db").allowMainThreadQueries().build().getNotaDao();
+
         List<Nota> todasNotas = dao.todos();
         configuraRecyclerView(todasNotas);
         configuraBotaoInsereNovaNota();
@@ -58,7 +69,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     private void configuraItemTouchHelper(RecyclerView listaDeNotas) {
         //Essa classe é específica do RecyclerView pra fazer essas configurações de animações. Ela dá um erro de compilação no construtor porque ela exige
         //que exista uma implementação de uma entidade chamada de Callback, que é responsável de fazer a configuração de deslize ou movimento.
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter, dao));
 
         //Para anexar os comportamentos animados no recyclerView, usamos a referência do objeto itemTouchHelper e o método estático attachToRecyclerView
         itemTouchHelper.attachToRecyclerView(listaDeNotas);
@@ -135,13 +146,13 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     }
 
     private void insereNotaNova(Nota nota) {
-        new NotaDao().insere(nota);
+        dao.insere(nota);
         //aqui vamos notificar o adapter da alteração, para isso é necessário criar o método para inserir a nota na lista interna do adapter e ao mesmo tempo notificar a mudança
         adapter.insereNotaNova(nota);
     }
 
     private void editaNota(Nota nota, int posicao) {
-        new NotaDao().altera(posicao, nota);
+        dao.altera(nota);
         adapter.altera(posicao, nota);
     }
 

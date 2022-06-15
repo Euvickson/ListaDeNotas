@@ -80,6 +80,10 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
         notifyItemMoved(posicaoInicial, posicaoFinal);
     }
 
+    public Nota getNota(int posicaoDaNotaDeslizada) {
+        return notas.get(posicaoDaNotaDeslizada);
+    }
+
     class NotaViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView titulo;

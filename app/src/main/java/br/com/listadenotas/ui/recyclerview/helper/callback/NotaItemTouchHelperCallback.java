@@ -5,14 +5,18 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import br.com.listadenotas.dao.NotaDao;
+import br.com.listadenotas.database.dao.RoomNotaDAO;
+import br.com.listadenotas.model.Nota;
 import br.com.listadenotas.ui.recyclerview.adapter.AdapterRecyclerview;
 
 public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final AdapterRecyclerview adapter;
+    private final RoomNotaDAO dao;
 
-    public NotaItemTouchHelperCallback(AdapterRecyclerview adapter) {
+    public NotaItemTouchHelperCallback(AdapterRecyclerview adapter, RoomNotaDAO dao) {
         this.adapter = adapter;
+        this.dao = dao;
     }
 
     //Esse método é resposável por definir o que vamos permitir de animação. Deslizar pra direita ou esquerda
@@ -44,22 +48,24 @@ public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
         return true;
     }
 
-    private void trocaNotas(int posicaoInicial, int posicaoFinal) {
-        new NotaDao().troca(posicaoInicial, posicaoFinal);
-        adapter.troca(posicaoInicial, posicaoFinal);
-    }
-
     //Nesse daqui é quando o moviemnto for de deslize. É como se fosse uma chamada de listeners.
+
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         //A princípio, ao tentar remover a nota fazendo uma instância do DAO, devemos mandar a posição, mas não temos essa posição, porém temos o viewHolder
         //e ele mesmo sabe qual a posição do elemento deslizado na lista.
         int posicaoDaNotaDeslizada = viewHolder.getAdapterPosition();
-        removeNota(posicaoDaNotaDeslizada);
+        Nota nota = adapter.getNota(posicaoDaNotaDeslizada);
+        removeNota(posicaoDaNotaDeslizada, nota);
     }
 
-    private void removeNota(int posicao) {
-        new NotaDao().remove(posicao);
+    private void trocaNotas(int posicaoInicial, int posicaoFinal) {
+        new NotaDao().troca(posicaoInicial, posicaoFinal);
+        adapter.troca(posicaoInicial, posicaoFinal);
+    }
+
+    private void removeNota(int posicao, Nota nota) {
+        dao.remove(nota);
 
         //Da mesma maneira que removemos o item no DAO, devemos remover no adapter pra ele mesmo atualizar a lista de itens, mas não possuímos o adapter,
         //logo, vamos receber o adapter que queremos mexer, via construtor e torná-la um atributo de classe.
