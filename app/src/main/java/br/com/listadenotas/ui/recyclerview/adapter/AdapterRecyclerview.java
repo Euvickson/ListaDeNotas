@@ -33,7 +33,6 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
 
     //é chamado apenas uma vez, e APENAS cria todas as views necessárias para aparecerem na tela do usuário. As informações de cada item são colocados pelo onBindViewHolder.
     //Como queremos criar os containers(views) nesse método, precisamos fazer o inflate de um layout que queremos que apareça na tela que chamar esse adapter e que possuir a lista.
-    //
     @NonNull
     @Override
     public AdapterRecyclerview.NotaViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,9 +40,9 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
         return new NotaViewHolder(viewCriada);
     }
 
-    //Quando chegamos nesse método, recebemos um ViewHolder nos parâmetros. Esse viewHolder é a view "Atual" que precisa receber as informações. Então usamos a referência "holder"
-    //Para mandar as informações que queremos. Então pegamos o espaço que queremos preencher, a partir do layout da lista definido no onCreateViewHolder, e setamos o texto a partir
-    //Da nota dentro de sua posição
+    /*Quando chegamos nesse método, recebemos um ViewHolder nos parâmetros. Esse viewHolder é a view "Atual" que precisa receber as informações. Então usamos a referência "holder"
+    Para mandar as informações que queremos. Então pegamos o espaço que queremos preencher, a partir do layout da lista definido no onCreateViewHolder, e setamos o texto a partir
+    Da nota dentro de sua posição */
     @Override
     public void onBindViewHolder(@NonNull AdapterRecyclerview.NotaViewHolder holder, int position) {
         Nota nota = notas.get(position);

@@ -8,14 +8,17 @@ import java.io.Serializable;
 @Entity
 public class Nota implements Serializable {
 
-    //Qualquer entidade anotada como entidade, deve ter uma PrimaryKey, que vai ser uma chave que vai identificar os alunos, que vai deixar eles únicos
-    //dentro do projeto. Para deixar o room gerenciar essa informação e não ser preciso gerenciar essa informação, delegamos essa função de gerar o id ao
-    //prórpio room, colocando entre parênteses o autogenerate = true
     @PrimaryKey(autoGenerate = true)
-    private int id = 0;
+    private int id;
+
     private String titulo;
+
     private String descricao;
 
+
+    /*Qualquer entidade anotada como entidade, deve ter uma PrimaryKey, que vai ser uma chave que vai identificar os alunos, que vai deixar eles únicos
+    dentro do projeto. Para deixar o room gerenciar essa informação e não ser preciso gerenciar essa informação, delegamos essa função de gerar o id ao
+    prórpio room, colocando entre parênteses o autogenerate = true */
     public Nota(String titulo, String descricao) {
         this.titulo = titulo;
         this.descricao = descricao;
@@ -35,5 +38,10 @@ public class Nota implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void editaInformacoes(String titulo, String descricao){
+        this.titulo = titulo;
+        this.descricao = descricao;
     }
 }

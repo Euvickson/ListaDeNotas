@@ -26,6 +26,7 @@ public class InsereNotaActivity extends AppCompatActivity {
     private int posicaoRecebida = POSICAO_INVALIDA;
     private EditText titulo;
     private EditText descricao;
+    private Nota notaRecebida;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class InsereNotaActivity extends AppCompatActivity {
             //Iremos tornar a posição um atributo de classe.
             posicaoRecebida = intentRecebida.getIntExtra(CHAVE_POSICAO, POSICAO_INVALIDA);
 
-            Nota notaRecebida = (Nota) intentRecebida.getSerializableExtra(CHAVE_NOTA);
+            notaRecebida = (Nota) intentRecebida.getSerializableExtra(CHAVE_NOTA);
             preencheCampos(notaRecebida);
         } else {
             setTitle(TITULO_APPBAR_NOVA_NOTA);
@@ -73,16 +74,25 @@ public class InsereNotaActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (verificaMenuTocado(item)) {
-            Nota notaCriada = criaNota();
-            retornaNotaParaOnActivityResult(notaCriada);
+            if(notaRecebida != null){
+                editaTituloEDescricao();
+                retornaNotaParaOnActivityResult(notaRecebida);
+            } else{
+                Nota notaCriada = criaNota();
+                retornaNotaParaOnActivityResult(notaCriada);
+            }
             finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void retornaNotaParaOnActivityResult(Nota notaCriada) {
+    private void editaTituloEDescricao() {
+        notaRecebida.editaInformacoes(titulo.getText().toString(), descricao.getText().toString());
+    }
+
+    private void retornaNotaParaOnActivityResult(Nota nota) {
         Intent resultadoDaInsercao = new Intent();
-        colocaExtraNoIntent(notaCriada, resultadoDaInsercao);
+        colocaExtraNoIntent(nota, resultadoDaInsercao);
 
         //Esse é o método utilizado para responder ao startActivityForResult, enviando uma intent e o código de resultado
         setResult(Activity.RESULT_OK, resultadoDaInsercao);

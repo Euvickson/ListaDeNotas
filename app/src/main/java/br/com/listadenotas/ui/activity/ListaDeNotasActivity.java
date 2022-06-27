@@ -51,7 +51,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
         atitude recomendada. Mas para objetivo de teste, como ele é um builder, podemos usar a chamada encadeada .allowMainThreadQueries() para forçar essa atitude
 
         Esse nome é o nome do arquivo que vai ser gerado e que vai manter os dados do banco de dados.*/
-        dao = Room.databaseBuilder(this, ListaDeNotasDatabase.class, "ListaDeNotas.db").allowMainThreadQueries().build().getNotaDao();
+        dao = ListaDeNotasDatabase.getInstance(this).getNotaDao();
 
         List<Nota> todasNotas = dao.todos();
         configuraRecyclerView(todasNotas);
@@ -152,8 +152,8 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     }
 
     private void editaNota(Nota nota, int posicao) {
-        dao.altera(nota);
         adapter.altera(posicao, nota);
+        dao.altera(nota);
     }
 
     private boolean verificaPosicaoValida(int posicaoRecebida) {
