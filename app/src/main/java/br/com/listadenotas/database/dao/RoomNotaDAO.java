@@ -31,4 +31,10 @@ public interface RoomNotaDAO {
 
     @Update
     void altera(Nota nota);
+
+    @Query("DELETE FROM nota")
+    void deletaTodos();
+
+    @Insert
+    void adicionaTodos(List<Nota> todasNotas);
 }

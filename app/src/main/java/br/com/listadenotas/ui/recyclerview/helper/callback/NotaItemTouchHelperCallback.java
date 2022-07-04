@@ -37,14 +37,14 @@ public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
     //A ideia desse é uma chamada pra quando um elemento for arrastado dentro do recyclerView
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        //Utilizando esse listener do drag, tempos a possibilidade de fazer a ordenação da lista, através do recyclerView e dos dois viewHolders
-        //O viewHolder é o item que tá sendo arrastado, e o target é o  alvo que sofre a ordenação
+        /*Utilizando esse listener do drag, tempos a possibilidade de fazer a ordenação da lista, através do recyclerView e dos dois viewHolders
+        O viewHolder é o item que tá sendo arrastado, e o target é o  alvo que sofre a ordenação*/
         int posicaoInicial = viewHolder.getAdapterPosition();
         int posicaoFinal = target.getAdapterPosition();
         trocaNotas(posicaoInicial, posicaoFinal);
 
-        //Por padrão devolvemos o false. Se deixarmos o padrão, ainda vamos ter o comportamento esperado. Mas pra o Callback o esperado é que devolvamos true
-        //caso o movimento tenha ocorrido. Isso é uma boa prática, mesmo que o resultado seja indiferente do retorno.
+        /*Por padrão devolvemos o false. Se deixarmos o padrão, ainda vamos ter o comportamento esperado. Mas pra o Callback o esperado é que devolvamos true
+        caso o movimento tenha ocorrido. Isso é uma boa prática, mesmo que o resultado seja indiferente do retorno.*/
         return true;
     }
 
