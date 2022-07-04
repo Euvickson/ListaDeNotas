@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.List;
+
 import br.com.listadenotas.dao.NotaDao;
 import br.com.listadenotas.database.dao.RoomNotaDAO;
 import br.com.listadenotas.model.Nota;
@@ -60,8 +62,13 @@ public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     private void trocaNotas(int posicaoInicial, int posicaoFinal) {
-        new NotaDao().troca(posicaoInicial, posicaoFinal);
-        adapter.troca(posicaoInicial, posicaoFinal);
+        List<Nota> listaAlterada = adapter.troca(posicaoInicial, posicaoFinal);
+        modificaListaDoDAO(listaAlterada);
+    }
+
+    private void modificaListaDoDAO(List<Nota> listaAlterada) {
+        dao.deletaTodos();
+        dao.adicionaTodos(listaAlterada);
     }
 
     private void removeNota(int posicao, Nota nota) {

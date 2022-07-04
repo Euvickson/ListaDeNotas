@@ -13,6 +13,8 @@ import java.util.Collections;
 import java.util.List;
 
 import br.com.listadenotas.R;
+import br.com.listadenotas.dao.NotaDao;
+import br.com.listadenotas.database.dao.RoomNotaDAO;
 import br.com.listadenotas.model.Nota;
 
 public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclerview.NotaViewHolder> {
@@ -74,9 +76,17 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
         notifyItemRemoved(posicao);
     }
 
-    public void troca(int posicaoInicial, int posicaoFinal) {
+    public List<Nota> troca(int posicaoInicial, int posicaoFinal) {
         Collections.swap(notas, posicaoInicial, posicaoFinal);
+        trodaIdsDasNotas(posicaoInicial, posicaoFinal);
         notifyItemMoved(posicaoInicial, posicaoFinal);
+        return notas;
+    }
+
+    private void trodaIdsDasNotas(int posicaoInicial, int posicaoFinal) {
+        Nota notaInicial = notas.get(posicaoInicial);
+        Nota notaFinal = notas.get(posicaoFinal);
+        notaInicial.trocaId(notaFinal);
     }
 
     public Nota getNota(int posicaoDaNotaDeslizada) {

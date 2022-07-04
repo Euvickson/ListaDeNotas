@@ -44,4 +44,10 @@ public class Nota implements Serializable {
         this.titulo = titulo;
         this.descricao = descricao;
     }
+
+    public void trocaId(Nota notaFinal) {
+        int auxiliar = this.id;
+        this.id = notaFinal.getId();
+        notaFinal.setId(auxiliar);
+    }
 }
