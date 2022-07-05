@@ -13,8 +13,6 @@ import java.util.Collections;
 import java.util.List;
 
 import br.com.listadenotas.R;
-import br.com.listadenotas.dao.NotaDao;
-import br.com.listadenotas.database.dao.RoomNotaDAO;
 import br.com.listadenotas.model.Nota;
 
 public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclerview.NotaViewHolder> {

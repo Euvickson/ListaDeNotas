@@ -6,7 +6,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-import br.com.listadenotas.database.dao.RoomNotaDAO;
+import br.com.listadenotas.database.dao.NotaDAO;
 import br.com.listadenotas.model.Nota;
 
 //Antes de iniciar qualquer configuração do Room dentro de um projeto, é necessário ler a documentação oficial, para ter noções dos conceitos básicos.
@@ -25,7 +25,7 @@ public abstract class ListaDeNotasDatabase extends RoomDatabase {
 
     private static final String NOME_BANCO_DE_DADOS = "ListaDeNotas.db";
 
-    public abstract RoomNotaDAO getNotaDao();
+    public abstract NotaDAO getNotaDao();
 
     public static ListaDeNotasDatabase getInstance(Context context){
         return Room.databaseBuilder(context, ListaDeNotasDatabase.class, NOME_BANCO_DE_DADOS).allowMainThreadQueries().build();

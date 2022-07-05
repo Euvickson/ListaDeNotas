@@ -17,14 +17,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.room.Room;
 
 import java.util.List;
 
-import br.com.listadenotas.dao.NotaDao;
 import br.com.listadenotas.R;
 import br.com.listadenotas.database.ListaDeNotasDatabase;
-import br.com.listadenotas.database.dao.RoomNotaDAO;
+import br.com.listadenotas.database.dao.NotaDAO;
 import br.com.listadenotas.model.Nota;
 import br.com.listadenotas.ui.recyclerview.adapter.AdapterRecyclerview;
 import br.com.listadenotas.ui.recyclerview.helper.callback.NotaItemTouchHelperCallback;
@@ -33,7 +31,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
     public static final String TITULO_APPBAR = "Notas";
     private AdapterRecyclerview adapter;
-    private RoomNotaDAO dao;
+    private NotaDAO dao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -14,7 +14,7 @@ import br.com.listadenotas.model.Nota;
 //compreensão, abrir a documentação oficial. Só um detalhe, interfaces são para casos mais simples, como o desse projeto. E classes abstratas teria um membro
 //ou um método que vai ter mais comportamentos do que são gerados pelo room.
 @Dao
-public interface RoomNotaDAO {
+public interface NotaDAO {
     //Ao implementar o método "insere", o Room não sabe o que fazer come esse tipo de dado. E dado que é uma interface, os métodos não podem ter corpo. Logo, devemos anotar com o
     //@Insert que é um comportamento padrão do room, onde ele sabe que tem que inserir um dado dentro do banco de dados, assim como esse, existem outras anotações simples. Lembrando
     //que o objeto enviado por argumento deve ser uma entidade para que tudo possa funcionar corretamente

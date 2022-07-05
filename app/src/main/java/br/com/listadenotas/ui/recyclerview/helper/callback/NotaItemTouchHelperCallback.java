@@ -6,17 +6,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-import br.com.listadenotas.dao.NotaDao;
-import br.com.listadenotas.database.dao.RoomNotaDAO;
+import br.com.listadenotas.database.dao.NotaDAO;
 import br.com.listadenotas.model.Nota;
 import br.com.listadenotas.ui.recyclerview.adapter.AdapterRecyclerview;
 
 public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final AdapterRecyclerview adapter;
-    private final RoomNotaDAO dao;
+    private final NotaDAO dao;
 
-    public NotaItemTouchHelperCallback(AdapterRecyclerview adapter, RoomNotaDAO dao) {
+    public NotaItemTouchHelperCallback(AdapterRecyclerview adapter, NotaDAO dao) {
         this.adapter = adapter;
         this.dao = dao;
     }
