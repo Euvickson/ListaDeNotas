@@ -4,7 +4,9 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 @Entity
 public class Nota implements Serializable {
@@ -26,6 +28,7 @@ public class Nota implements Serializable {
         this.titulo = titulo;
         this.descricao = descricao;
     }
+
     public Calendar getDataCriacao() {
         return dataCriacao;
     }
@@ -59,8 +62,22 @@ public class Nota implements Serializable {
     }
 
     public void editaInformacoes(String titulo, String descricao){
+        verificaSeHouveMudanca(titulo, descricao);
         this.titulo = titulo;
         this.descricao = descricao;
+    }
+
+    private void verificaSeHouveMudanca(String titulo, String descricao) {
+        if(!titulo.equals(this.titulo) || !descricao.equals(this.descricao)){
+            setDataEdicao(Calendar.getInstance());
+        }
+    }
+
+    public String datasFormatadas(){
+        SimpleDateFormat formatador = new SimpleDateFormat("dd/MM/yyyy");
+        String dataCriacaoFormatada = formatador.format(dataCriacao.getTime());
+        String dataEdicaoFormatada = formatador.format(dataEdicao.getTime());
+        return "Criada em " + dataCriacaoFormatada + " - Última edição em " + dataEdicaoFormatada;
     }
 
     public void trocaId(Nota notaFinal) {

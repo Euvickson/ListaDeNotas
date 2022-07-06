@@ -31,19 +31,19 @@
                 android:maxLines="6"
                 android:textSize="18sp"
                 app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintBottom_toTopOf="@+id/textView"
+                app:layout_constraintBottom_toTopOf="@+id/item_recyclerview_datas"
                 app:layout_constraintStart_toStartOf="@+id/item_recyclerview_titulo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/item_recyclerview_titulo"
                 tools:text="Descrição"/>
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/item_recyclerview_datas"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:textColor="@color/material_dynamic_neutral70"
+                android:textColor="@color/light_gray"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintTop_toBottomOf="@id/item_recyclerview_descricao"
                 app:layout_constraintBottom_toBottomOf="parent"

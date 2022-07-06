@@ -95,6 +95,7 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
 
         private final TextView titulo;
         private final TextView descricao;
+        private final TextView datas;
         //Como vamos precisar enviar a nota como parâmetro do onItemClickListener, tornamos a nota um atributo da classe viewHolder para conseguir trabalhar com ela.
         private Nota nota;
 
@@ -102,6 +103,8 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
             super(itemView);
             titulo = itemView.findViewById(R.id.item_recyclerview_titulo);
             descricao = itemView.findViewById(R.id.item_recyclerview_descricao);
+            datas = itemView.findViewById(R.id.item_recyclerview_datas);
+
             //Aqui setamos o click do item, com a setOnClickListener, que é uma função que todos possuem, mas dentro dele nós chamamos o onItemClickListener.
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -124,6 +127,7 @@ public class AdapterRecyclerview extends RecyclerView.Adapter<AdapterRecyclervie
         private void preencheCampos(Nota nota) {
             titulo.setText(nota.getTitulo());
             descricao.setText(nota.getDescricao());
+            datas.setText(nota.datasFormatadas());
         }
     }
 }
