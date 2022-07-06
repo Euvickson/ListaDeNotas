@@ -4,6 +4,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 import java.io.Serializable;
+import java.util.Calendar;
 
 @Entity
 public class Nota implements Serializable {
@@ -14,14 +15,31 @@ public class Nota implements Serializable {
     private String titulo;
 
     private String descricao;
-
+    private Calendar dataCriacao = Calendar.getInstance();
+    private Calendar dataEdicao = Calendar.getInstance();
 
     /*Qualquer entidade anotada como entidade, deve ter uma PrimaryKey, que vai ser uma chave que vai identificar os alunos, que vai deixar eles únicos
-    dentro do projeto. Para deixar o room gerenciar essa informação e não ser preciso gerenciar essa informação, delegamos essa função de gerar o id ao
-    prórpio room, colocando entre parênteses o autogenerate = true */
+        dentro do projeto. Para deixar o room gerenciar essa informação e não ser preciso gerenciar essa informação, delegamos essa função de gerar o id ao
+        prórpio room, colocando entre parênteses o autogenerate = true */
+
     public Nota(String titulo, String descricao) {
         this.titulo = titulo;
         this.descricao = descricao;
+    }
+    public Calendar getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(Calendar dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public Calendar getDataEdicao() {
+        return dataEdicao;
+    }
+
+    public void setDataEdicao(Calendar dataEdicao) {
+        this.dataEdicao = dataEdicao;
     }
 
     public String getTitulo() {
