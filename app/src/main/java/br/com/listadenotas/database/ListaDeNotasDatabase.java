@@ -1,14 +1,13 @@
 package br.com.listadenotas.database;
 
+import static br.com.listadenotas.database.ListaDeNotasMigrations.TODAS_MIGRATIONS;
+
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
-import androidx.room.migration.Migration;
-import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import br.com.listadenotas.database.converter.ConversorCalendar;
 import br.com.listadenotas.database.dao.NotaDAO;
@@ -44,13 +43,7 @@ public abstract class ListaDeNotasDatabase extends RoomDatabase {
         return Room
                 .databaseBuilder(context, ListaDeNotasDatabase.class, NOME_BANCO_DE_DADOS)
                 .allowMainThreadQueries()
-                .addMigrations(new Migration(1, 2) {
-                    @Override
-                    public void migrate(@NonNull SupportSQLiteDatabase database) {
-                        database.execSQL("ALTER TABLE Nota ADD COLUMN dataCriacao INTEGER");
-                        database.execSQL("ALTER TABLE Nota ADD COLUMN dataEdicao INTEGER");
-                    }
-                })
+                .addMigrations(TODAS_MIGRATIONS)
                 .build();
     }
 }
