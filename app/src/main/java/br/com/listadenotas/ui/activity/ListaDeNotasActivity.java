@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import br.com.listadenotas.R;
 import br.com.listadenotas.database.ListaDeNotasDatabase;
@@ -32,6 +34,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     public static final String TITULO_APPBAR = "Notas";
     private AdapterRecyclerview adapter;
     private NotaDAO dao;
+    private ExecutorService threadParalela;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +53,24 @@ public class ListaDeNotasActivity extends AppCompatActivity {
 
         Esse nome é o nome do arquivo que vai ser gerado e que vai manter os dados do banco de dados.*/
         dao = ListaDeNotasDatabase.getInstance(this).getNotaDao();
-
-        List<Nota> todasNotas = dao.todos();
-        configuraRecyclerView(todasNotas);
+        buscaTodasAsNotasExecutor();
         configuraBotaoInsereNovaNota();
+    }
+
+    private void buscaTodasAsNotasExecutor() {
+        threadParalela = Executors.newSingleThreadExecutor();
+        threadParalela.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<Nota> todasNotas = dao.todos();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        configuraRecyclerView(todasNotas);
+                    }
+                });
+            }
+        });
     }
 
     private void configuraRecyclerView(List<Nota> todasNotas) {
@@ -67,7 +84,7 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     private void configuraItemTouchHelper(RecyclerView listaDeNotas) {
         //Essa classe é específica do RecyclerView pra fazer essas configurações de animações. Ela dá um erro de compilação no construtor porque ela exige
         //que exista uma implementação de uma entidade chamada de Callback, que é responsável de fazer a configuração de deslize ou movimento.
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter, dao));
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new NotaItemTouchHelperCallback(adapter, dao, threadParalela));
 
         //Para anexar os comportamentos animados no recyclerView, usamos a referência do objeto itemTouchHelper e o método estático attachToRecyclerView
         itemTouchHelper.attachToRecyclerView(listaDeNotas);
@@ -144,14 +161,32 @@ public class ListaDeNotasActivity extends AppCompatActivity {
     }
 
     private void insereNotaNova(Nota nota) {
-        dao.insere(nota);
+        salvaNotaNovaExecutor(nota);
         //aqui vamos notificar o adapter da alteração, para isso é necessário criar o método para inserir a nota na lista interna do adapter e ao mesmo tempo notificar a mudança
         adapter.insereNotaNova(nota);
     }
 
+    private void salvaNotaNovaExecutor(Nota nota) {
+        threadParalela.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.insere(nota);
+            }
+        });
+    }
+
     private void editaNota(Nota nota, int posicao) {
         adapter.altera(posicao, nota);
-        dao.altera(nota);
+        editaNotaExecutor(nota);
+    }
+
+    private void editaNotaExecutor(Nota nota) {
+        threadParalela.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.altera(nota);
+            }
+        });
     }
 
     private boolean verificaPosicaoValida(int posicaoRecebida) {

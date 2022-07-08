@@ -42,7 +42,6 @@ public abstract class ListaDeNotasDatabase extends RoomDatabase {
     public static ListaDeNotasDatabase getInstance(Context context) {
         return Room
                 .databaseBuilder(context, ListaDeNotasDatabase.class, NOME_BANCO_DE_DADOS)
-                .allowMainThreadQueries()
                 .addMigrations(TODAS_MIGRATIONS)
                 .build();
     }

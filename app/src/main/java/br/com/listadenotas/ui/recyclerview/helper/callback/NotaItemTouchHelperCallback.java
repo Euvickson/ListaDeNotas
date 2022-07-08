@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 
 import br.com.listadenotas.database.dao.NotaDAO;
 import br.com.listadenotas.model.Nota;
@@ -14,10 +15,12 @@ public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
 
     private final AdapterRecyclerview adapter;
     private final NotaDAO dao;
+    private final ExecutorService threadParalela;
 
-    public NotaItemTouchHelperCallback(AdapterRecyclerview adapter, NotaDAO dao) {
+    public NotaItemTouchHelperCallback(AdapterRecyclerview adapter, NotaDAO dao, ExecutorService threadParalela) {
         this.adapter = adapter;
         this.dao = dao;
+        this.threadParalela = threadParalela;
     }
 
     //Esse método é resposável por definir o que vamos permitir de animação. Deslizar pra direita ou esquerda
@@ -66,12 +69,22 @@ public class NotaItemTouchHelperCallback extends ItemTouchHelper.Callback {
     }
 
     private void modificaListaDoDAO(List<Nota> listaAlterada) {
-        dao.deletaTodos();
-        dao.adicionaTodos(listaAlterada);
+        threadParalela.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.deletaTodos();
+                dao.adicionaTodos(listaAlterada);
+            }
+        });
     }
 
     private void removeNota(int posicao, Nota nota) {
-        dao.remove(nota);
+        threadParalela.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.remove(nota);
+            }
+        });
 
         //Da mesma maneira que removemos o item no DAO, devemos remover no adapter pra ele mesmo atualizar a lista de itens, mas não possuímos o adapter,
         //logo, vamos receber o adapter que queremos mexer, via construtor e torná-la um atributo de classe.
